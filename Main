@@ -1,5 +1,4 @@
 import java.util.StringTokenizer;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -37,6 +36,7 @@ public class Main {
 		fontstuff = doc.getElementsByTag("font");
 		String untokenized = fontstuff.text();
 		
+		
 		st = new StringTokenizer(untokenized, "1", false);
 		outerloop:
 		while(st.hasMoreTokens()) {
@@ -51,6 +51,14 @@ public class Main {
 					
 					s2 = st2.nextToken();
 					if(s2.length()>15) {
+						if(s2.equals(" Llaga que se forma en la comisura de los" +
+								" labios EJEMPLO:  la sal le molesta en las boqueras"))  {
+							int j = i+1;
+							System.out.print("\n" + j +". " + args[i] + ": " + args[i].toUpperCase() + 
+									" CANNOT BE RESOLVED TO A DEFINITION");
+							break outerloop;
+						}
+						else {
 						int j = i+1;
 						System.out.print("\n" + j +". " + args[i] + ":" + s2 + ".");
 							break outerloop;
@@ -59,6 +67,7 @@ public class Main {
 			}
 				}
 			
+		}
 		}
 		
 		
