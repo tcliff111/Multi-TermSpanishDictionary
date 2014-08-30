@@ -1,0 +1,76 @@
+import java.util.StringTokenizer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+public class Main {
+
+	private static Elements fontstuff;
+	private static StringTokenizer st;
+	private static StringTokenizer st2;
+	private static String s;
+	private static String s2;
+
+	
+	public static void main(String[] args) {
+		
+		int count = 0;
+		String[] urls = new String[args.length];
+
+		System.out.println("Lista de Vocabulario");
+		
+		for(int i=0; i<args.length; i++) {
+		urls[i] = "http://www.diccionarios.com/detalle.php?palabra="
+				+ args[i]
+				+ "&Buscar.x=0&Buscar.y=0&Buscar=submit&dicc_100=on&dicc_100=on";
+
+
+		
+		try 
+		{
+		Document doc = Jsoup.connect(urls[i])
+							.userAgent("Mozilla/5.0 Gecko/20100101 Firefox/21.0")
+							.timeout(0)
+							.get();
+
+		fontstuff = doc.getElementsByTag("font");
+		String untokenized = fontstuff.text();
+		
+		st = new StringTokenizer(untokenized, "1", false);
+		outerloop:
+		while(st.hasMoreTokens()) {
+			
+			s = st.nextToken();
+			count++;
+			if(count==2) {
+				
+				count = 0;
+				st2 = new StringTokenizer(s, ".", false);
+				while(st2.hasMoreTokens()) {
+					
+					s2 = st2.nextToken();
+					if(s2.length()>15) {
+						int j = i+1;
+						System.out.print("\n" + j +". " + args[i] + ":" + s2 + ".");
+							break outerloop;
+							}
+				}
+			}
+				}
+			
+		}
+		
+		
+		
+		catch (Exception e) {
+			System.out.println("EXCEPTION: Word is probably not in this dictionary.");
+		}
+		
+		}
+	
+		
+
+	
+	}
+}
